@@ -1,0 +1,40 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: {{ include "app.fullname" . }}
+  labels:
+    {{- include "app.labels" . | nindent 4 }}
+  {{- with .Values.cronjob.annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+spec:
+  schedule: "{{ .Values.cronjob.schedule }}"
+  {{- with .Values.cronjob.concurrencyPolicy }}
+  concurrencyPolicy: {{ . }}
+  {{- end }}
+  {{- with .Values.cronjob.failedJobsHistoryLimit }}
+  failedJobsHistoryLimit: {{ . }}
+  {{- end }}
+  {{- with .Values.cronjob.successfulJobsHistoryLimit }}
+  successfulJobsHistoryLimit: {{ . }}
+  {{- end }}
+  jobTemplate:
+    spec:
+      template:
+        metadata:
+          labels:
+            {{- include "app.selectorLabels" . | nindent 12 }}
+        spec:
+          restartPolicy: {{ .Values.cronjob.restartPolicy }}
+          containers:
+            - name: {{ .Chart.Name }}
+              image: curlimages/curl
+              imagePullPolicy: {{ .Values.image.pullPolicy }}
+              command: [ '/bin/sh', '-c', '/usr/bin/curl -ks https://freedns.afraid.org/dynamic/update.php?$(afraid-token)' ]
+              env:
+                - name: afraid-token
+                  valueFrom:
+                    secretKeyRef:
+                      name: {{ include "app.fullname" . }}
+                      key: afraid-token
