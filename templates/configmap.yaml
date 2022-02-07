@@ -19,7 +19,7 @@ data:
       location ~ \.php$ {
         fastcgi_split_path_info ^(.+?\.php)(/.*)$;
     
-        fastcgi_pass {{ .Values.service.phpServiceName }}:9000;
+        fastcgi_pass {{ .Values.php.serviceName }}:9000;
         # fastcgi_pass unix:/var/run/php/php7.4-fpm.sock;
         fastcgi_index index.php;
     
