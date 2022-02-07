@@ -98,12 +98,13 @@ php:
   serviceName: back-php
 
 afraid:
+  enabled: false
   token: VnRtV3A4SGRBSXpUSTJPRXJlOE86MTk5NDU0NTU=
 
-cronjob:
-  schedule: "*/5 * * * *"
-  annotations: {}
-  concurrencyPolicy: Forbid
-  failedJobsHistoryLimit: 3
-  successfulJobsHistoryLimit: 1
-  restartPolicy: OnFailure
+  cronjob:
+    schedule: "*/5 * * * *"
+    annotations: {}
+    concurrencyPolicy: Forbid
+    failedJobsHistoryLimit: 3
+    successfulJobsHistoryLimit: 1
+    restartPolicy: OnFailure

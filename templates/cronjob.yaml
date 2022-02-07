@@ -1,22 +1,23 @@
+{{- if .Values.afraid.enabled }}
 apiVersion: batch/v1
 kind: CronJob
 metadata:
   name: {{ include "app.fullname" . }}
   labels:
     {{- include "app.labels" . | nindent 4 }}
-  {{- with .Values.cronjob.annotations }}
+  {{- with .Values.afraid.cronjob.annotations }}
   annotations:
     {{- toYaml . | nindent 4 }}
   {{- end }}
 spec:
-  schedule: "{{ .Values.cronjob.schedule }}"
-  {{- with .Values.cronjob.concurrencyPolicy }}
+  schedule: "{{ .Values.afraid.cronjob.schedule }}"
+  {{- with .Values.afraid.cronjob.concurrencyPolicy }}
   concurrencyPolicy: {{ . }}
   {{- end }}
-  {{- with .Values.cronjob.failedJobsHistoryLimit }}
+  {{- with .Values.afraid.cronjob.failedJobsHistoryLimit }}
   failedJobsHistoryLimit: {{ . }}
   {{- end }}
-  {{- with .Values.cronjob.successfulJobsHistoryLimit }}
+  {{- with .Values.afraid.cronjob.successfulJobsHistoryLimit }}
   successfulJobsHistoryLimit: {{ . }}
   {{- end }}
   jobTemplate:
@@ -26,15 +27,16 @@ spec:
           labels:
             {{- include "app.selectorLabels" . | nindent 12 }}
         spec:
-          restartPolicy: {{ .Values.cronjob.restartPolicy }}
+          restartPolicy: {{ .Values.afraid.cronjob.restartPolicy }}
           containers:
             - name: {{ .Chart.Name }}
               image: curlimages/curl
               imagePullPolicy: {{ .Values.image.pullPolicy }}
-              command: [ '/bin/sh', '-c', '/usr/bin/curl -ks https://freedns.afraid.org/dynamic/update.php?$(afraid-token)' ]
+              command: [ "/bin/sh", "-c", "/usr/bin/curl -ks https://freedns.afraid.org/dynamic/update.php?$(afraid-token)" ]
               env:
                 - name: afraid-token
                   valueFrom:
                     secretKeyRef:
                       name: {{ include "app.fullname" . }}
                       key: afraid-token
+  {{- end }}
