@@ -99,7 +99,7 @@ php:
 
 afraid:
   enabled: false
-  token: VnRtV3A4SGRBSXpUSTJPRXJlOE86MTk5NDU0NTU=
+  token: "VnRtV3A4SGRBSXpUSTJPRXJlOE86MTk5NDU0NTU="
 
   cronjob:
     schedule: "*/5 * * * *"
