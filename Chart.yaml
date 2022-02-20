@@ -25,4 +25,4 @@ appVersion: "1.16.0"
 dependencies:
   - name: php
     version: "0.1.0"
-    repository: "file://../kube-php"
+    repository: "https://id-0x56.github.io/charts"
